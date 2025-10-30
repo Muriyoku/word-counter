@@ -62,6 +62,10 @@ fn get_source() -> Result<Vec<Vec<String>>, String> {
 }
 
 fn register_result(list: &HashMap<String, i64>) -> Result<(), String> {
+    let mut sorted_list: Vec<(&String, &i64)> = list.iter().collect();
+    
+    sorted_list.sort_by(|a: &(&String, &i64), b: &(&String, &i64)| b.1.cmp(a.1));
+
     let file = OpenOptions::new()
         .write(true)
         .create(true)
@@ -69,7 +73,7 @@ fn register_result(list: &HashMap<String, i64>) -> Result<(), String> {
         .open("./result.txt");
     let mut buffer = String::new();
 
-    for (k, v) in list {
+    for (k, v) in sorted_list {
         buffer.push_str(format!("repeated: {k} {v} times\n").as_str());
     }
 
