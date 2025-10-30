@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 use std::fs::File;
 use std::io::Read;
+use std::vec;
 
 fn main() {
     let mut word_collection: HashMap<String, i64> = HashMap::new();
@@ -33,8 +34,16 @@ fn get_source() -> Result<Vec<Vec<String>>, String>{
             match res {
                 Ok(_) => {
                     let mut words_vec: Vec<Vec<String>> = vec![];
+                    let mut clear_buffer: String = String::new();
 
                     for l in buffer.lines() {
+                        clear_buffer = l.chars()
+                        .filter(|c| c.is_alphanumeric() || c.is_whitespace()) 
+                        .collect()
+                       
+                    }
+
+                    for l in clear_buffer.to_lowercase().lines() {
                         words_vec.push(
                             l.split(" ")
                             .map(|w| w.to_string())
